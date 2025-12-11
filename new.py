@@ -1,13 +1,44 @@
-<<<<<<< Updated upstream
-#python new.py --input "filepath" --model large-v3 --device cuda --compute_type float16 --batch_size 8 --diarize --token --gemini_key key--out_dir "F:\Projects\ASR(Sửa cái dịch phiên)\ASR_outputs" 
+#python new.py --input "test2.mp3" --diarize
 #pip install torch==2.8.0 torchvision==0.23.0 torchaudio==2.8.0 --index-url https://download.pytorch.org/whl/cu128
-=======
 #python new.py --input "F:\Projects\ASR(Sửa cái dịch phiên)\ASR\test2.mp3" --model large-v3 --batch_size 8 --diarize --gemini_batch_size 30 --out_dir "F:\Projects\ASR(Sửa cái dịch phiên)\ASR_outputs"#pip install torch==2.8.0 torchvision==0.23.0 torchaudio==2.8.0 --index-url https://download.pytorch.org/whl/cu128
->>>>>>> Stashed changes
 #pip install git+https://github.com/m-bain/whisperx.git
 #pip install google-generativeai
 import os
 import sys
+import warnings
+import logging
+
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"          
+os.environ["TRANSFORMERS_VERBOSITY"] = "error"     
+os.environ["PYTORCH_LIGHTNING_CONSOLE_LOG_LEVEL"] = "0" 
+
+
+warnings.filterwarnings("ignore")
+
+try:
+    from warnings import simplefilter
+    simplefilter(action='ignore', category=FutureWarning)
+    simplefilter(action='ignore', category=UserWarning)
+    simplefilter(action='ignore', category=DeprecationWarning)
+except: pass
+
+LOGGERS_TO_SILENCE = [
+    "whisperx",            # Chặn log "INFO - No language specified..."
+    "whisperx.asr",        # Chặn log ASR cụ thể
+    "vads",                # Chặn log VAD
+    "transformers",        # Chặn log model weights
+    "pytorch_lightning",   # Chặn log Lightning upgrade
+    "numba",
+    "matplotlib",
+    "urllib3",
+    "speechbrain"
+]
+
+for logger_name in LOGGERS_TO_SILENCE:
+    logging.getLogger(logger_name).setLevel(logging.ERROR)
+
+# ==========================================
+
 import argparse
 import subprocess
 import tempfile
@@ -23,6 +54,8 @@ import librosa
 import soundfile as sf
 import google.generativeai as genai
 
+for logger_name in LOGGERS_TO_SILENCE:
+    logging.getLogger(logger_name).setLevel(logging.ERROR)
 # Thư viện dịch miễn phí & Phân cụm
 try:
     from deep_translator import GoogleTranslator
@@ -42,7 +75,7 @@ except ImportError:
 # CẤU HÌNH NGÔN NGỮ
 # -------------------------
 INPUT_LANG = "vi"      # Ngôn ngữ gốc
-OUTPUT_LANG = "vi"     # Ngôn ngữ đích
+OUTPUT_LANG = "en"     # Ngôn ngữ đích
 # -------------------------
 
 # -------------------------
