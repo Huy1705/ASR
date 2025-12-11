@@ -1,5 +1,9 @@
+<<<<<<< Updated upstream
 #python new.py --input "filepath" --model large-v3 --device cuda --compute_type float16 --batch_size 8 --diarize --token --gemini_key key--out_dir "F:\Projects\ASR(Sửa cái dịch phiên)\ASR_outputs" 
 #pip install torch==2.8.0 torchvision==0.23.0 torchaudio==2.8.0 --index-url https://download.pytorch.org/whl/cu128
+=======
+#python new.py --input "F:\Projects\ASR(Sửa cái dịch phiên)\ASR\test2.mp3" --model large-v3 --batch_size 8 --diarize --gemini_batch_size 30 --out_dir "F:\Projects\ASR(Sửa cái dịch phiên)\ASR_outputs"#pip install torch==2.8.0 torchvision==0.23.0 torchaudio==2.8.0 --index-url https://download.pytorch.org/whl/cu128
+>>>>>>> Stashed changes
 #pip install git+https://github.com/m-bain/whisperx.git
 #pip install google-generativeai
 import os
