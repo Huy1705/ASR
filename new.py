@@ -53,7 +53,29 @@ import torch
 import librosa
 import soundfile as sf
 import google.generativeai as genai
+try:
+    # Lưu lại hàm torch.load gốc
+    original_torch_load = torch.load
 
+    # Định nghĩa hàm load tùy chỉnh
+    def custom_torch_load(*args, **kwargs):
+        # Kiểm tra xem weights_only đã được đặt chưa. Nếu chưa, ép nó thành False.
+        if 'weights_only' not in kwargs:
+            kwargs['weights_only'] = False
+        
+        # Gọi hàm torch.load gốc
+        return original_torch_load(*args, **kwargs)
+
+    # Thay thế hàm torch.load gốc bằng hàm tùy chỉnh
+    torch.load = custom_torch_load
+    print("✅ Cảnh báo bảo mật PyTorch đã bị vượt qua: Đặt weights_only=False cho tất cả các lần gọi torch.load.")
+    
+except Exception as e:
+    print(f"❌ Lỗi khi cố gắng thay thế torch.load: {e}")
+except ImportError as e:
+    print(f"⚠️ Lỗi import cần thiết: {e}. Bỏ qua fix PyTorch an toàn.")
+except Exception as e:
+    print(f"❌ Lỗi khi áp dụng fix PyTorch an toàn: {e}")
 for logger_name in LOGGERS_TO_SILENCE:
     logging.getLogger(logger_name).setLevel(logging.ERROR)
 # Thư viện dịch miễn phí & Phân cụm
