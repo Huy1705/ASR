@@ -1,4 +1,9 @@
 #python main.py --input "test2.mp3" --diarize
+#pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+#pip install Cython packaging
+#pip install "nemo_toolkit[asr]"
+#pip install git+https://github.com/m-bain/whisperx.git
+#pip install google-generativeai deep-translator numpy
 import os
 import sys
 import warnings
